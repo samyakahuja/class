@@ -1,0 +1,174 @@
+---
+title: "SortTimes"
+author: "Samyak Ahuja"
+date: "August 3, 2018"
+output: pdf_document
+---
+
+```{r include=FALSE}
+library(ggplot2)
+library(ggpmisc)
+library(reshape2)
+```
+
+# Complexity for different Sorting Algorithms.
+
+## Helper Functions
+
+### Replicator
+
+```{r}
+replicator <- function(func){
+  ele <- seq(from = 0, to = 10000, by = 250)
+  ele <- ele[-1]
+  timeElapsed <- c()
+  for(n in ele){
+    timeElapsed <- c(timeElapsed, system.time(replicate(10, func(sample(x = 1:100, size = n, replace = TRUE))))[3] / 10)
+  }
+  return (data.frame(timeElapsed,ele))
+}
+```
+
+### Plotter
+
+```{r}
+plotter <- function(df){
+  ggplot(df, aes(timeElapsed, ele, color = timeElapsed)) +
+    geom_point(shape = 16, size = 5, show.legend = FALSE, alpha = 0.6) + 
+    stat_smooth(method="loess", formula=y~x) + 
+    theme_minimal() + 
+    scale_color_gradient(low = "#32aeff", high = "#f2aeff")
+}
+```
+
+## Insertion Sort
+
+### Sorting Algorithm
+```{r}
+insertionSort <- function(vec){
+  n <- length(vec)
+  for(i in 2:n){
+    val <- vec[i]
+    pos <- which.max(vec[1:i] > val) #returns index of first occurence of TRUE
+    if(pos == 1){
+      if(val < vec[1]){
+        vec <- c(val, vec[-i])
+      }  
+    }
+    else{
+      vec <- vec[-i]
+      vec <- c(vec[1:(pos-1)], val, vec[pos:(n-1)])
+    }
+  }
+  return (vec)
+}
+```
+
+### Proof of concept
+```{r}
+insertionSort(c(1,2,99,-21,2,23,1))
+```
+
+### RunTime and Plot
+```{r}
+isdf <- replicator(insertionSort)
+isdf
+plotter(isdf)
+```
+
+
+## Merge Sort
+
+### Sorting Algorithm
+
+```{r}
+mergeSort <- function(vec){
+  
+  mergeTwo <- function(left,right){
+    res <- c()
+    while(length(left) > 0 && length(right) > 0){
+      if(left[1] <= right[1]){
+        res <- c(res,left[1])
+        left <- left[-1]  
+      }else{
+        res <- c(res,right[1])
+        right <- right[-1]
+      }
+    }
+    if(length(left) > 0) res <- c(res,left)
+    if(length(right) > 0) res <- c(res,right)
+    return (res)
+  }
+  
+  n <- length(vec)
+  if(n <= 1) return (vec)
+  else{
+    middle <- length(vec) / 2
+    left <- vec[1:floor(middle)]
+    right <- vec[floor(middle + 1):n]
+    left <- mergeSort(left)
+    right <- mergeSort(right)
+    if(left[length(left)] <= right[1]){
+      return (c(left,right))
+    }else{
+      return (mergeTwo(left,right))
+    }
+  }
+}
+```
+
+### Proof of Concept
+```{r}
+mergeSort(c(12,-22,13,2,-33,2))
+```
+
+### RunTime and Plot
+```{r}
+msdf <- replicator(mergeSort)
+msdf
+plotter(msdf)
+```
+
+
+## Quick Sort
+
+### Sorting Algorithm
+
+```{r}
+quickSort <- function(vec){
+  if(length(vec) > 1){
+    pivot <- median(vec)
+    return (c(quickSort(vec[vec < pivot]), vec[vec == pivot], quickSort(vec[vec > pivot])))
+  }else{
+    return (vec)
+  }
+}
+```
+
+### Proof of Concept
+```{r}
+quickSort(c(12,-22,13,2,-33,2))
+```
+
+### RunTime and Plot
+```{r}
+qsdf <- replicator(quickSort)
+qsdf
+plotter(qsdf)
+```
+
+
+## Combined Plots
+
+```{r}
+df <- data.frame(is = isdf[[1]], ms = msdf[[1]], qs = qsdf[[1]], ele = msdf[[2]])
+df <- melt(df, id.vars = "ele")
+ggplot(df, aes(value, ele, col = variable)) + 
+  geom_point(shape = 16, size = 2, alpha = 0.6) + 
+  stat_smooth(method="loess", formula=y~x) + 
+  stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~x) + 
+  labs(subtitle = "Size vs Time",
+       y = "Number of Elements",
+       x = "Time (in seconds)",
+       title = "Combined Scatter Plot")
+```
