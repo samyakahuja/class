@@ -3,7 +3,7 @@
 #include <vector>
 
 bool isPrime(int x){
-    if(x == 2 | x == 3) return true;
+    if(x == 2 || x == 3) return true;
     for(int i = 2; i * i <= x; i++){
         if(x % i == 0) return false;
         else if((i + 1) > sqrt(x)) return true;
@@ -28,12 +28,16 @@ int main(){
     std::cin>>r;
     nr = n - r;
 
-    if(r > n){
-        std::cout<<"0";
+    if(n < 0 || r < 0){
+        std::cout<<"Enter +ve integers\n";
         return 0;
     }
-    if(r == 0 | n == r){
-        std::cout<<"1";
+    if(r > n){
+        std::cout<<"0\n";
+        return 0;
+    }
+    if(r == 0 || n == r){
+        std::cout<<"1\n";
         return 0;
     }
 
@@ -65,45 +69,28 @@ int main(){
     }
 
     for(int i = 0; i < nVec.size(); i++){
-        std::cout<<nVec[i]<<"\t";
+        nFac[nVec[i] - 2] = fact(n, nVec[i]);
     }
-    std::cout<<"\n";
+    
     for(int i = 0; i < rVec.size(); i++){
-        std::cout<<rVec[i]<<"\t";
+        rFac[rVec[i] - 2] = fact(r, rVec[i]);
     }
-    std::cout<<"\n";
+    
     for(int i = 0; i < nrVec.size(); i++){
-        std::cout<<nrVec[i]<<"\t";
+        nrFac[nrVec[i] - 2] = fact(nr, nrVec[i]);
     }
-    std::cout<<"\n";
 
-    for(int i = 0; i < nVec.size(); i++){
-        nFac[nVec[i]] = fact(n, nVec[i]);
-    }
-    
-    for(int i = 0; i < rVec.size(); i++){
-        rFac[rVec[i]] = fact(r, rVec[i]);
-    }
-    
-    for(int i = 0; i < nrVec.size(); i++){
-        nrFac[nrVec[i]] = fact(nr, nrVec[i]);
-    }
+    bool show = false;
 
     for(int i = 0; i < nFac.size(); i++){
         nFac[i] = nFac[i] - rFac[i] - nrFac[i];
         if(nFac[i] != 0){
-            std::cout<<i<<"^"<<nFac[i]<<"\t";
+            if(show) std::cout<<" * ";
+            std::cout<<i + 2<<"^"<<nFac[i];
+            show = true;
         }
     }
+    std::cout<<"\n";
     return 0;
 }
-
-
-
-
-
-
-
-
-
 
