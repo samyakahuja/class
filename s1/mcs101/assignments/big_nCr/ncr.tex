@@ -3,6 +3,8 @@
 \usepackage{amsmath}
 \usepackage{hyperref} 
 \usepackage{listings}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
 
 \hypersetup{
     colorlinks=true,      
@@ -88,6 +90,25 @@ then we can conclude the nCr proof.
 
 \lstinputlisting[language=c++]{ncr.cpp}
 
+\vspace{2em}
 
+\section{Output}
+\vspace{2em}
+\includegraphics[width = \textwidth]{sc1.png} \\\\ \\\\
+\includegraphics[width = \textwidth]{sc2.png}
+
+
+\section{Runtime}
+
+RunTime of the algorithm in the worst cast is $O(n\sqrt{n})$ where
+n is the $n$ in $nCr$ or $\binom{n}{r}$. The run time can be validated
+by observing that for a number $n$ we find all the prime numbers upto
+$n$ which takes $n.O(\sqrt{n}) = O(n\sqrt{n})$ time. Now for numbers : 
+$n$, $r$, and $n-r$ we calculate the powers of prime factors that
+constitute towards $n!$, $r!$, and $(n-r)!$ respectively. This is
+done in the function \emph{fact} of the code and takes $O(logn)$ in
+the worst case. At last subtracting the powers of the prime factors
+take $\theta(n)$ time. Hence the entire algorithm runs in 
+$O(n\sqrt{n})$ time.
 
 \end{document}
