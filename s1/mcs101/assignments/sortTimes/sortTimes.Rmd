@@ -18,26 +18,52 @@ library(reshape2)
 ### Replicator
 
 ```{r}
-replicator <- function(func){
-  ele <- seq(from = 0, to = 10000, by = 250)
+replicator <- function(func, size = 1000){
+  if(size == 1000){
+      ele <- seq(from = 0, to = 1000, by = 50)
+  }else{
+      ele <- seq(from = 0, to = 10000, by = 250)
+  }
   ele <- ele[-1]
   timeElapsed <- c()
   for(n in ele){
-    timeElapsed <- c(timeElapsed, system.time(replicate(10, func(sample(x = 1:100, size = n, replace = TRUE))))[3] / 10)
+    timeElapsed <- c(timeElapsed, 
+                     system.time(
+                       replicate(10, func(sample(x = 1:100, size = n, replace = TRUE)))
+                       )[3] / 10
+                     )
   }
-  return (data.frame(timeElapsed,ele))
+  return (data.frame(ele,timeElapsed))
 }
 ```
 
 ### Plotter
 
 ```{r}
-plotter <- function(df){
-  ggplot(df, aes(timeElapsed, ele, color = timeElapsed)) +
+plotter <- function(df, df_title){
+  ggplot(df, aes(ele, timeElapsed, color = timeElapsed)) +
     geom_point(shape = 16, size = 5, show.legend = FALSE, alpha = 0.6) + 
     stat_smooth(method="loess", formula=y~x) + 
     theme_minimal() + 
+    labs(subtitle = "Time vs Size",
+       y = "Time (in seconds)",
+       x = "Number of Elements",
+       title = df_title) +
     scale_color_gradient(low = "#32aeff", high = "#f2aeff")
+}
+```
+
+### Combined Plotter
+```{r}
+comb_plotter <- function(df, df_title){
+  ggplot(df, aes(ele, value, col = variable)) + 
+  geom_point(shape = 16, size = 2, alpha = 0.6) + 
+  stat_smooth(method="loess", formula=y~x) + 
+  labs(subtitle = "Time vs Size",
+       y = "Time (in seconds)",
+       x = "Number of Elements",
+       title = df_title) +
+  stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~x) 
 }
 ```
 
@@ -71,9 +97,12 @@ insertionSort(c(1,2,99,-21,2,23,1))
 
 ### RunTime and Plot
 ```{r}
-isdf <- replicator(insertionSort)
-isdf
-plotter(isdf)
+isdf_small <- replicator(insertionSort)
+isdf_small
+plotter(isdf_small, "Insertion Sort - Small N")
+isdf_big <- replicator(insertionSort, 10000)
+isdf_big
+plotter(isdf_big, "Insertion Sort - Large N")
 ```
 
 
@@ -124,9 +153,12 @@ mergeSort(c(12,-22,13,2,-33,2))
 
 ### RunTime and Plot
 ```{r}
-msdf <- replicator(mergeSort)
-msdf
-plotter(msdf)
+msdf_small <- replicator(mergeSort)
+msdf_small
+plotter(msdf_small, "Merge Sort - Small N")
+msdf_big <- replicator(mergeSort, 10000)
+msdf_big
+plotter(msdf_big, "Merge Sort - Large N")
 ```
 
 
@@ -152,23 +184,35 @@ quickSort(c(12,-22,13,2,-33,2))
 
 ### RunTime and Plot
 ```{r}
-qsdf <- replicator(quickSort)
-qsdf
-plotter(qsdf)
+qsdf_small <- replicator(quickSort)
+qsdf_small
+plotter(qsdf_small, "Quick Sort - Small N")
+qsdf_big <- replicator(quickSort, 10000)
+qsdf_big
+plotter(qsdf_big, "Quick Sort - large N")
 ```
 
 
 ## Combined Plots
 
+### Small N
 ```{r}
-df <- data.frame(is = isdf[[1]], ms = msdf[[1]], qs = qsdf[[1]], ele = msdf[[2]])
-df <- melt(df, id.vars = "ele")
-ggplot(df, aes(value, ele, col = variable)) + 
-  geom_point(shape = 16, size = 2, alpha = 0.6) + 
-  stat_smooth(method="loess", formula=y~x) + 
-  stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~x) + 
-  labs(subtitle = "Size vs Time",
-       y = "Number of Elements",
-       x = "Time (in seconds)",
-       title = "Combined Scatter Plot")
+df_small <- data.frame(insertionSort = isdf_small[[2]], 
+                 mergeSort = msdf_small[[2]], 
+                 quickSort = qsdf_small[[2]], 
+                 ele = msdf_small[[1]])
+df_small
+df_small <- melt(df_small, id.vars = "ele")
+comb_plotter(df_small, "Combined Scatter Plot for small N")
+```
+
+### Large N
+```{r}
+df_big <- data.frame(insertionSort = isdf_big[[2]], 
+                 mergeSort = msdf_big[[2]], 
+                 quickSort = qsdf_big[[2]], 
+                 ele = msdf_big[[1]])
+df_big
+df_big <- melt(df_big, id.vars = "ele")
+comb_plotter(df_big, "Combined Scatter Plot for large N")
 ```
