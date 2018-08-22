@@ -27,11 +27,12 @@ replicator <- function(func, size = 1000){
   ele <- ele[-1]
   timeElapsed <- c()
   for(n in ele){
-    timeElapsed <- c(timeElapsed, 
-                     system.time(
-                       replicate(10, func(sample(x = 1:100, size = n, replace = TRUE)))
-                       )[3] / 10
-                     )
+    op <- 0
+    for(i in 1:10){
+         op = op + func(sample(x = 1:100, size = n, replace = TRUE))$operations
+    }
+    op = op / 10
+    timeElapsed <- c(timeElapsed, op)
   }
   return (data.frame(ele,timeElapsed))
 }
@@ -46,10 +47,11 @@ plotter <- function(df, df_title){
     stat_smooth(method="loess", formula=y~x) + 
     theme_minimal() + 
     labs(subtitle = "Time vs Size",
-       y = "Time (in seconds)",
+       y = "Number of Elementary Operations (Averaged)",
        x = "Number of Elements",
        title = df_title) +
-    scale_color_gradient(low = "#32aeff", high = "#f2aeff")
+    scale_color_gradient(low = "#32aeff", high = "#f2aeff") +
+    stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~x)
 }
 ```
 
@@ -59,8 +61,9 @@ comb_plotter <- function(df, df_title){
   ggplot(df, aes(ele, value, col = variable)) + 
   geom_point(shape = 16, size = 2, alpha = 0.6) + 
   stat_smooth(method="loess", formula=y~x) + 
+  theme_minimal() +
   labs(subtitle = "Time vs Size",
-       y = "Time (in seconds)",
+       y = "Number of Elementary Operations",
        x = "Number of Elements",
        title = df_title) +
   stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~x) 
@@ -73,26 +76,26 @@ comb_plotter <- function(df, df_title){
 ```{r}
 insertionSort <- function(vec){
   n <- length(vec)
+  op <- 1
   for(i in 2:n){
-    val <- vec[i]
-    pos <- which.max(vec[1:i] > val) #returns index of first occurence of TRUE
-    if(pos == 1){
-      if(val < vec[1]){
-        vec <- c(val, vec[-i])
-      }  
+    key <- vec[i]
+    pos <- i - 1
+    op <- op + 3
+    while(pos > 0 && vec[pos] > key){
+      vec[pos + 1] = vec[pos]
+      pos = pos - 1
+      op <- op + 4
     }
-    else{
-      vec <- vec[-i]
-      vec <- c(vec[1:(pos-1)], val, vec[pos:(n-1)])
-    }
+    vec[pos + 1] <- key
+    op <- op + 1
   }
-  return (vec)
+  return (list("vec" = vec, "operations" = op))
 }
 ```
 
 ### Proof of concept
 ```{r}
-insertionSort(c(1,2,99,-21,2,23,1))
+cat(insertionSort(c(1,2,99,-21,2,23,1))$vec, "\n")
 ```
 
 ### RunTime and Plot
@@ -100,6 +103,9 @@ insertionSort(c(1,2,99,-21,2,23,1))
 isdf_small <- replicator(insertionSort)
 isdf_small
 plotter(isdf_small, "Insertion Sort - Small N")
+```
+
+```{r}
 isdf_big <- replicator(insertionSort, 10000)
 isdf_big
 plotter(isdf_big, "Insertion Sort - Large N")
@@ -114,8 +120,10 @@ plotter(isdf_big, "Insertion Sort - Large N")
 mergeSort <- function(vec){
   
   mergeTwo <- function(left,right){
+    op <- 0
     res <- c()
     while(length(left) > 0 && length(right) > 0){
+      op <- op + 5
       if(left[1] <= right[1]){
         res <- c(res,left[1])
         left <- left[-1]  
@@ -124,24 +132,31 @@ mergeSort <- function(vec){
         right <- right[-1]
       }
     }
-    if(length(left) > 0) res <- c(res,left)
-    if(length(right) > 0) res <- c(res,right)
-    return (res)
+    if(length(left) > 0){
+      res <- c(res,left)
+      op <- op + length(left)
+    }
+    if(length(right) > 0){
+      res <- c(res,right)
+      op <- op + length(right)
+    }
+    op <- op + 2
+    return (list("vec" = res, "operations" = op))
   }
   
+  op <- 0
   n <- length(vec)
-  if(n <= 1) return (vec)
+  if(n <= 1) return (list("vec" = vec, "operations" = op + 1))
   else{
-    middle <- length(vec) / 2
-    left <- vec[1:floor(middle)]
-    right <- vec[floor(middle + 1):n]
-    left <- mergeSort(left)
-    right <- mergeSort(right)
-    if(left[length(left)] <= right[1]){
-      return (c(left,right))
-    }else{
-      return (mergeTwo(left,right))
-    }
+    op <- op + 1 # 1 added for previous if
+    middle <- length(vec) %/% 2 #integer division
+    left_list <- mergeSort(vec[1:middle])
+    right_list <- mergeSort(vec[(middle + 1):n])
+    left <- left_list$vec
+    right <- right_list$vec
+    res <- mergeTwo(left,right)
+    op <- op + left_list$operations + right_list$operations + res$operations + 4
+    return (list("vec" = res$vec, "operations" = op))
   }
 }
 ```
@@ -156,6 +171,9 @@ mergeSort(c(12,-22,13,2,-33,2))
 msdf_small <- replicator(mergeSort)
 msdf_small
 plotter(msdf_small, "Merge Sort - Small N")
+```
+
+```{r}
 msdf_big <- replicator(mergeSort, 10000)
 msdf_big
 plotter(msdf_big, "Merge Sort - Large N")
@@ -168,11 +186,17 @@ plotter(msdf_big, "Merge Sort - Large N")
 
 ```{r}
 quickSort <- function(vec){
+  op <- 0
   if(length(vec) > 1){
-    pivot <- median(vec)
-    return (c(quickSort(vec[vec < pivot]), vec[vec == pivot], quickSort(vec[vec > pivot])))
+    pivot <- vec[1]
+    left_list <- quickSort(vec[vec < pivot])
+    right_list <- quickSort(vec[vec > pivot])
+    op <- op + 4 + length(vec)
+    vec <- c(left_list$vec,vec[vec == pivot], right_list$vec)
+    op <- op + left_list$operations + right_list$operations + 2 + length(vec)
+    return (list("vec" = vec, "operations" = op))
   }else{
-    return (vec)
+    return (list("vec" = vec, "operations" = op + 1))
   }
 }
 ```
@@ -180,6 +204,8 @@ quickSort <- function(vec){
 ### Proof of Concept
 ```{r}
 quickSort(c(12,-22,13,2,-33,2))
+quickSort(c(1,1,-2,2,3,-3))
+quickSort(c(-10,-9,10,12))
 ```
 
 ### RunTime and Plot
@@ -187,6 +213,9 @@ quickSort(c(12,-22,13,2,-33,2))
 qsdf_small <- replicator(quickSort)
 qsdf_small
 plotter(qsdf_small, "Quick Sort - Small N")
+```
+
+```{r}
 qsdf_big <- replicator(quickSort, 10000)
 qsdf_big
 plotter(qsdf_big, "Quick Sort - large N")
@@ -197,10 +226,10 @@ plotter(qsdf_big, "Quick Sort - large N")
 
 ### Small N
 ```{r}
-df_small <- data.frame(insertionSort = isdf_small[[2]], 
+df_small <- data.frame(ele = msdf_small[[1]],
+                 insertionSort = isdf_small[[2]], 
                  mergeSort = msdf_small[[2]], 
-                 quickSort = qsdf_small[[2]], 
-                 ele = msdf_small[[1]])
+                 quickSort = qsdf_small[[2]])
 df_small
 df_small <- melt(df_small, id.vars = "ele")
 comb_plotter(df_small, "Combined Scatter Plot for small N")
