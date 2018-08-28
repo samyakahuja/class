@@ -76,11 +76,10 @@ comb_plotter <- function(df, df_title){
 ```{r}
 insertionSort <- function(vec){
   n <- length(vec)
-  op <- 1
+  op <- 0
   for(i in 2:n){
     key <- vec[i]
     pos <- i - 1
-    op <- op + 1
     while(pos > 0 && vec[pos] > key){
       vec[pos + 1] = vec[pos]
       pos = pos - 1
@@ -95,7 +94,7 @@ insertionSort <- function(vec){
 
 ### Proof of concept
 ```{r}
-cat(insertionSort(c(1,2,99,-21,2,23,1))$vec, "\n")
+insertionSort(c(12,-22,13,2,-33,2))
 ```
 
 ### RunTime and Plot
@@ -123,7 +122,7 @@ mergeSort <- function(vec){
     op <- 0
     res <- c()
     while(length(left) > 0 && length(right) > 0){
-      op <- op + 3
+      op <- op + 1
       if(left[1] <= right[1]){
         res <- c(res,left[1])
         left <- left[-1]  
@@ -138,15 +137,13 @@ mergeSort <- function(vec){
     if(length(right) > 0){
       res <- c(res,right)
     }
-    op <- op + 4
     return (list("vec" = res, "operations" = op))
   }
   
   op <- 0
   n <- length(vec)
-  if(n <= 1) return (list("vec" = vec, "operations" = op + 1))
+  if(n <= 1) return (list("vec" = vec, "operations" = op))
   else{
-    op <- op + 1 # 1 added for previous if
     middle <- length(vec) %/% 2 #integer division
     left_list <- mergeSort(vec[1:middle])
     right_list <- mergeSort(vec[(middle + 1):n])
@@ -187,10 +184,10 @@ quickSort <- function(vec, low = 1, high = length(vec)){
   
   partition <- function(vec, low, high){
     i = low
-    op = 1
+    op <- 0
     pivot = vec[high]
     for(j in low:(high - 1)){
-      op = op + 2
+      op <- op + 1 
       if(vec[j] <= pivot){
         temp = vec[i]
         vec[i] = vec[j]
@@ -204,7 +201,7 @@ quickSort <- function(vec, low = 1, high = length(vec)){
     return (list("vec" = vec, "operations" = op, "pi" = i))
   }
   
-  op <- 1
+  op <- 0
   if(low < high){
     pi_list = partition(vec, low, high)
     vec <- pi_list$vec
@@ -227,8 +224,6 @@ quickSort <- function(vec, low = 1, high = length(vec)){
 ### Proof of Concept
 ```{r}
 quickSort(c(12,-22,13,2,-33,2))
-quickSort(c(1,1,-2,2,3,-3))
-quickSort(c(-10,-9,10,12))
 ```
 
 ### RunTime and Plot
