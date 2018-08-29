@@ -56,7 +56,8 @@ max_iteration = 16
 iterator = 1
 
 function setup(){
-    createCanvas(600,600)
+    let beehive = createCanvas(600,600)
+    beehive.parent('beehive')
     background(51)
     // frameRate(1)
     bee = new Walker(width/2, height/2)

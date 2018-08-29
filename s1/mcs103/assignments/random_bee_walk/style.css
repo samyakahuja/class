@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+html{
+  font-size: 10px;
+}
+
+body{
+  font-size: 1.6rem;
+  margin: 0;
+  padding: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+  background: #eee;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.content-intro{
+    margin-bottom: 40px;
+    width: 100vw;
+}
+
+.content-intro .intro{
+    max-width: 80vw;
+    margin: 0 auto;
+    padding: 20px 0px;
+    text-align: center
+}
+
+@media (min-width: 450px){
+    body .content-intro .intro {
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    body .content-intro .intro .title{
+        font-size: 6.2rem;
+    }       
+}
+
+.title{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 3.6rem;
+}
+
+.sub-title{
+    margin-top: 15px;
+    font-size: 1.6rem;
+    line-height: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3rem;
+    word-spacing: 0.6rem;
+    font-weight: 600;
+}
+
+.results{
+    max-width: 800px;
+    margin: 20px auto;
+    border: 4px solid black;
+    padding: 30px;
+}
+
+.results .res{
+    margin: 10px;
+    font-size: 2.4rem;
+}
+
+#beehive{
+    text-align: center
+}
