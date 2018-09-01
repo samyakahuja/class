@@ -6,7 +6,33 @@ Scribes for MCS-101 are filed by date and can be located [here](https://github.c
 ## Contribution
 Fork [this](https://github.com/samyakducs/class) repository and then modify the .tex file and generate the corresponding pdf file. After generating the pdf clean any other temporary files and then create a pull request
 
+### Developement Environment
+
+#### Installing Compiler and packages
+
+I use [TeX Live](https://www.tug.org/texlive/) for compiling the LaTeX files. I recommend not just installing the TeX compiler, but
+all the TeX packages.
+
+For Debian-based distros (Ubuntu/Mint): `sudo apt-get install texlive-full`
+
+For Arch-based distros (Manjaro/Antergos): `sudo pacman -S texlive-most texlive-lang`
+
+For Windows: Go to [MikTeX](https://miktex.org/download) and download the NET installer( can be found under All Downloads)
+since it has all the additional packages.
+
+#### Compiling
+
+You can just compile a .tex to .pdf by using `pdflatex __filename__` or automate it by using a plugin for your
+preferred text editor, for example you can use [LaTeX Workshop](https://marketplace.visualstudio.com/items?itemName=James-Yu.latex-workshop) 
+for VSCode.
+
 ## Files
 
 + [30-08-18](https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf)
+
+    <object data="https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf" type="application/pdf" width="700px" height="200px">
+        <embed src="(https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf)">
+            <p></p>
+        </embed>
+    </object>
 
