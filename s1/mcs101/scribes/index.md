@@ -30,9 +30,5 @@ for VSCode.
 
 + [30-08-18](https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf)
 
-    <object data="https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf" type="application/pdf" width="700px" height="200px">
-        <embed src="(https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf)">
-            <p></p>
-        </embed>
-    </object>
+    <embed src="https://rawgit.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf" width="700px" height="200px"></embed>
 
