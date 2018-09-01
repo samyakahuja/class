@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Random Walk</title>
     <script src="p5.js"></script>
+    <script src="https://rawgit.com/kimmobrunfeldt/progressbar.js/1.0.0/dist/progressbar.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,16 +18,17 @@
         </div>
     </div>
 
+    <div id="progressBar"></div>
     <div id="beehive"></div>
 
     <div class="content-intro">
         <div class="intro">
             <div class="title" style="font-size: 4.8rem">Movement Analysis</div>
             <div class="results">
-                <div class="res">Expected Value for 16 moves is <span id="res1">10</span></div>
-                <!-- <div class="res">Standard Deviation for 16 moves is <span id="res2">10</span></div> -->
-                <div class="res">Expected Value for 64 moves is <span id="res3">10</span></div>
-                <!-- <div class="res">Standard Deviation for 64 moves is <span id="res4">10</span></div> -->
+                <div class="res">Expected Value for 16 moves is <span id="res1">_</span></div>
+                <div class="res">Standard Deviation for 16 moves is <span id="res2">_</span></div>
+                <div class="res">Expected Value for 64 moves is <span id="res3">_</span></div>
+                <div class="res">Standard Deviation for 64 moves is <span id="res4">_</span></div>
             </div>
         </div>
     </div>

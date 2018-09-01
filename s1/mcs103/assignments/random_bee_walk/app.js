@@ -54,24 +54,40 @@ class Walker{
 let bee
 let w = 600
 let h = 600
+let bar
 let walk_length = 16
 let walk_iterator = 1
-let max_iterations = 500
+let max_iterations = 1000
 let iterator = 1
 let expected = 0
 let sixtyFourDone = false
+let distanceList = []
 
 function setup(){
     let beehive = createCanvas(600,600)
     beehive.parent('beehive')
 
     res1 = document.querySelector('#res1')
+    res2 = document.querySelector('#res2')
     res3 = document.querySelector('#res3')
-    console.log(res1);
+    res4 = document.querySelector('#res4')
+
+    bee = new Walker(width/2, height/2)
 
     background(51)
     frameRate(100)
-    bee = new Walker(width/2, height/2)
+
+    bar = new ProgressBar.Line(progressBar, {
+        strokeWidth: 4,
+        easing: 'easeInOut',
+        duration: 1400,
+        color: '#333',
+        trailColor: '#FFEB3B',
+        trailWidth: 4,
+        svgStyle: {width: '100%', height: '100%'}
+    });
+    bar.animate(0)
+      
 }
 
 function draw(){
@@ -79,10 +95,23 @@ function draw(){
     bee.display()
     if(iterator >= max_iterations){
         noLoop()
+        console.log(distanceList);
+
+        let sd = standardDeviation(distanceList)
+        
+        if(sixtyFourDone){
+            res4.innerHTML = sd.toFixed(2)
+        }else{
+            res2.innerHTML = sd.toFixed(2)
+        }
+
         if(!sixtyFourDone){
+            distanceList = []
+            expected = 0
             walk_length = 64
             iterator = 1
             sixtyFourDone = true
+            bar.animate(0)
             loop()
         }
     }
@@ -92,15 +121,45 @@ function draw(){
         walk_iterator++
     }
 
-    expected += dist(bee.getX(), bee.getY(), width / 2, height / 2) / max_iterations / bee.radius
-    console.log("dist = ", dist(bee.getX(), bee.getY(), width / 2, height / 2) / bee.radius,"expected = ", expected)
+    let distance = dist(bee.getX(), bee.getY(), width / 2, height / 2) / bee.radius
+    distanceList.push(distance)
+    expected += distance / max_iterations
+    // console.log("dist = ", distance,"expected = ", expected)
     if(!sixtyFourDone){
-        res1.innerHTML = int(expected)
+        res1.innerHTML = expected.toFixed(2)
     }else{
-        res3.innerHTML = int(expected)
+        res3.innerHTML = expected.toFixed(2)
     }
 
     bee = new Walker(width/2,height/2)
     walk_iterator = 1
     iterator++
+    bar.set(iterator / 1000)
+}
+
+
+function standardDeviation(values){
+    var avg = average(values);
+    
+    console.log(avg)
+
+    var squareDiffs = values.map(function(value){
+      var diff = value - avg;
+      var sqrDiff = diff * diff;
+      return sqrDiff;
+    });
+    
+    var avgSquareDiff = average(squareDiffs);
+  
+    var stdDev = Math.sqrt(avgSquareDiff);
+    return stdDev;
+}
+  
+function average(data){
+    var sum = data.reduce(function(sum, value){
+        return sum + value;
+    }, 0);
+
+    var avg = sum / data.length;
+    return avg;
 }
