@@ -30,5 +30,4 @@ for VSCode.
 
 + [30-08-18](https://github.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf)
 
-    <embed src="https://rawgit.com/samyakducs/class/tree/master/s1/mcs101/scribes/30.08.18.pdf" width="700px" height="200px"></embed>
-
+    <embed src="https://samyakducs.github.io/class/s1/mcs101/scribes/30.08.18.pdf" width="700px" height="400px"/>
