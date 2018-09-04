@@ -1,15 +1,18 @@
+![Title](https://img.shields.io/badge/title-random%20bee%20walker-blue.svg)
+![Author](https://img.shields.io/badge/author-samyak%20ahuja-orange.svg)
+
 # Random Walker : Bee
 
 ## Files
 
-Programming was predominantly done in javascript and to use
-a graphics library [p5js](http://p5js.org/) for interactive
-experience additional web files were generated. [app.js][app.js]
+Programming was done predominantly in javascript and to use
+a graphics library [p5js](http://p5js.org/) (for interactive
+experience) additional web files were generated. [app.js][app.js]
 file includes all the relevant programming.
 
 To launch the program just open the [index.html][index.html] 
 file in a browser, preferably google chrome because of certain 
-support issues in the JavaScript Engines in other browsers.
+JavaScript Engine support issues.
 
 ## Design Decisions
 
@@ -59,7 +62,7 @@ The angle theta is computed by mulipying the random variable(
 added because we want to bisect the edge of the Hexagon in order
 to get to the center of the next hexagon.
 
-```diagram
+```text
   -----  /
  /     \/
 /      /\
@@ -76,12 +79,12 @@ of the way computers interpret coordinate axes, where it is inverted as
 compared to normal coordinate axes we see everyday.
 
 
-### 2. Calculating the final Distance
+### 2. Calculating the Distance
 
 Distance between the starting and the final positions in the path can
 be calculated by using various methods but the method I choose is that
-of Eulers distance, which is the shortest distance between any 2 points
-in a coordinate plane.
+of Euclidean distance, which is the shortest distance between any 2 points
+in Euclidean Space.
 
 This gives an idea of displacement between the center of the starting
 hexagon and the center of the finishing hexagon. The equation that I used
@@ -92,9 +95,28 @@ let dist2Hex = bee.radius * cos(radians(30))
 let distance = dist(bee.getX(), bee.getY(), w / 2, h / 2) / dist2Hex
 ```
 Here _dist2Hex_ is the unit of measurement that I used which is equal to
-the distance between the center of a hexagon to the point at which the
+the distance between the center of a hexagon and the point at which the
 edge of the hexagon is bisected by the line joining the centers of 2
 neighbouring hexagons.
+
+The distance calculated originally was in terms of pixels and hence to
+normalize it I divided it by the unit of measurement _dist2Hex_
+
+
+### 3. Method of Computation
+
+I took an iteration to be defined as a block that executes, during which
+it goes from the starting state to the finishing state in a defined
+number of steps all according to the constraints defined in the problem, 
+and at the end appends the distance between the starting and final states
+to a list.
+
+This list gets populated during numerous iterations that are run. In my case
+I did 1000 such iterations. During each iteration I incrementally updated the
+mean and at the end of all iterations for a particular number of steps(like 16)
+I calculated the standard deviation.
+
+The same process was repeated for some other number of steps, say 64.
 
 
 
