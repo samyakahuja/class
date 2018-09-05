@@ -122,13 +122,13 @@ The same process was repeated for some other number of steps, say 64.
 
 Results obtained for paths of length 16 and 64 for any one generation were:
 
-Number of steps | Expected Value | Standard Deviation
-      ---       |      ---       |        ---
-      16        |      8.27      |       4.48
-      64        |      16.94     |       8.73
+|Number of steps | Expected Value | Standard Deviation|
+|----------------|----------------|-------------------|
+|      16        |      8.27      |       4.48        |
+|      64        |      16.94     |       8.73        |
 
 
-
+The standard deviation is too high for the solution to be called stable
 
 
 [comment]: # (Links to the references)
