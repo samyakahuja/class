@@ -62,6 +62,9 @@ The angle theta is computed by mulipying the random variable(
 added because we want to bisect the edge of the Hexagon in order
 to get to the center of the next hexagon.
 
+![Hexagon](hexagon.png)
+
+
 ```text
   -----  /
  /     \/
