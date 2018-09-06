@@ -7,12 +7,15 @@
 
 Programming was done predominantly in javascript and to use
 a graphics library [p5js](http://p5js.org/) (for interactive
-experience) additional web files were generated. [app.js][app.js]
+experience) additional web files were generated. [__app.js__][app.js]
 file includes all the relevant programming.
 
-To launch the program just open the [index.html][index.html] 
+To launch the program just open the [__index.html__][index.html] 
 file in a browser, preferably google chrome because of certain 
 JavaScript Engine support issues.
+
+The simulation is also hosted on github and with internet
+access can be accessed [__here__][index.html].
 
 ## Design Decisions
 
@@ -62,16 +65,7 @@ The angle theta is computed by mulipying the random variable(
 added because we want to bisect the edge of the Hexagon in order
 to get to the center of the next hexagon.
 
-![Hexagon](hexagon.png)
-
-
-```text
-  -----  /
- /     \/
-/      /\
-|     / |
-
-```
+![Hexagon](https://samyakducs.github.io/class/s1/mcs103/assignments/random_bee_walk/hexagon.png)
 
 Here the x location is changed by 2 times the radius of a hexagon
 (which is assumed to be equal to the distance between the center and
