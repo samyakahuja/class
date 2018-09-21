@@ -7,5 +7,6 @@
 [Ss]cripts
 pyvenv.cfg
 .venv
+.swp
 pip-selfcheck.json
 share
