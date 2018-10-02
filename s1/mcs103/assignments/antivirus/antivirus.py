@@ -1,7 +1,8 @@
 import os
 import argparse
 import glob
-import numpy as np
+import virus_checker as vc
+import sys
 
 def main():
     #define argument parser with path and optional extension
@@ -26,13 +27,16 @@ def main():
     #randomly display file as virus or not
     virus = set()
     for file in files:
-        chance = np.random.rand()
-        if(chance > 0.3):
+        sys.stdout.write("\033[0mrunning...")
+        sys.stdout.flush()
+        FileIsVirus = vc.isVirus(file)
+        sys.stdout.write('\r')
+        if(FileIsVirus):
             print("\033[92m✔", file)
         else:
             virus.add(file)
             print("\033[91m✘", file)
-   
+        
     if virus:
         print("\n\033[0;34mCheck Complete - Files with virus are:")
         for file in virus:

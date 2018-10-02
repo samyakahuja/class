@@ -11,4 +11,5 @@ pyvenv.cfg
 pip-selfcheck.json
 share
 .ipynb_checkpoints
+__pycache__
 

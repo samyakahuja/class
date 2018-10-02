@@ -17,6 +17,8 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
         + [N choose R for large numbers][bigNCR] 
     - [MCS103 - Information Security][MCS103]
         + [Random Bee Walker][BeeWalker] ---- [Live Github.io Page][BeeWalkerIO]
+        + [K-means Prework][kmeansPre]
+        + [Antivirus][antivirus]
     - [MCS105 - Computational Intelligence][MCS105]
         + Perceptron
         + Gates using Perceptron
@@ -30,7 +32,8 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
 [MCS105]: https://github.com/samyakducs/class/tree/master/s1/mcs105/
 [BeeWalker]: https://github.com/samyakducs/class/tree/master/s1/mcs103/assignments/random_bee_walk
 [BeeWalkerIO]: https://samyakducs.github.io/class/s1/mcs103/assignments/random_bee_walk/
+[kmeansPre]: https://github.com/samyakducs/class/tree/master/s1/mcs103/assignments/k-means-prework
+[antivirus]: https://github.com/samyakducs/class/tree/master/s1/mcs103/assignments/antivirus
 [SortTime]: https://github.com/samyakducs/class/tree/master/s1/mcs101/assignments/sortTimes
 [bigNCR]: https://github.com/samyakducs/class/tree/master/s1/mcs101/assignments/big_nCr
-
 
