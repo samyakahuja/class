@@ -18,18 +18,33 @@ library(reshape2)
 ### Replicator
 
 ```{r}
-replicator <- function(func, size = 1000){
-  if(size == 1000){
-      ele <- seq(from = 0, to = 1000, by = 50)
-  }else{
-      ele <- seq(from = 0, to = 10000, by = 250)
-  }
+
+dataSetGenerator <- function(size = 1000, sep = 20){
+    ele <- seq(from = 0, to = size, by = sep)
+    ele <- ele[-1]
+    data <- list()
+    for(n in ele){
+      iterator <- n / sep
+      repeated <- list()
+      for(i in 1:10){
+        repeated <- c(repeated, list(sample(x = 1:100, size = n, replace = TRUE)))
+      }
+      data <- c(data, repeated)
+    }
+    return (data)
+}
+
+dataSet <- dataSetGenerator()
+
+replicator <- function(func, size = 1000, sep = 20){
+  ele <- seq(from = 0, to = size, by = sep)
   ele <- ele[-1]
   timeElapsed <- c()
   for(n in ele){
     op <- 0
+    iterator <- n / sep
     for(i in 1:10){
-         op = op + func(sample(x = 1:100, size = n, replace = TRUE))$operations
+         op = op + func(dataSet[[iterator + i]])$operations
     }
     op = op / 10
     timeElapsed <- c(timeElapsed, op)
@@ -104,12 +119,6 @@ isdf_small
 plotter(isdf_small, "Insertion Sort - Small N")
 ```
 
-```{r eval=FALSE, include=FALSE}
-isdf_big <- replicator(insertionSort, 10000)
-isdf_big
-plotter(isdf_big, "Insertion Sort - Large N")
-```
-
 
 ## Merge Sort
 
@@ -137,6 +146,7 @@ mergeSort <- function(vec){
     if(length(right) > 0){
       res <- c(res,right)
     }
+    op <- op + 1
     return (list("vec" = res, "operations" = op))
   }
   
@@ -167,13 +177,6 @@ msdf_small <- replicator(mergeSort)
 msdf_small
 plotter(msdf_small, "Merge Sort - Small N")
 ```
-
-```{r eval=FALSE, include=FALSE}
-msdf_big <- replicator(mergeSort, 10000)
-msdf_big
-plotter(msdf_big, "Merge Sort - Large N")
-```
-
 
 ## Quick Sort
 
@@ -233,12 +236,6 @@ qsdf_small
 plotter(qsdf_small, "Quick Sort - Small N")
 ```
 
-```{r eval=FALSE, include=FALSE}
-qsdf_big <- replicator(quickSort, 10000)
-qsdf_big
-plotter(qsdf_big, "Quick Sort - large N")
-```
-
 
 ## Combined Plots
 
@@ -250,14 +247,4 @@ df_small <- data.frame(ele = msdf_small[[1]],
 df_small
 df_small <- melt(df_small, id.vars = "ele")
 comb_plotter(df_small, "Combined Scatter Plot for small N")
-```
-
-```{r eval=FALSE, include=FALSE}
-df_big <- data.frame(insertionSort = isdf_big[[2]], 
-                 mergeSort = msdf_big[[2]], 
-                 quickSort = qsdf_big[[2]], 
-                 ele = msdf_big[[1]])
-df_big
-df_big <- melt(df_big, id.vars = "ele")
-comb_plotter(df_big, "Combined Scatter Plot for large N")
 ```
