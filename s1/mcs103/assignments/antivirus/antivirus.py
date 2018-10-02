@@ -6,8 +6,8 @@ import numpy as np
 def main():
     #define argument parser with path and optional extension
     parser = argparse.ArgumentParser(description = 'SAM antivirus')
-    parser.add_argument('path', help = 'Absolute Path of the directory')
-    parser.add_argument('-e', '--extension', default = '', help = 'File extension to filter by')
+    parser.add_argument('path', nargs = "?", default = os.getcwd(), help = 'Absolute Path of the directory')
+    parser.add_argument('-e', '--extension', nargs = "+",  default = [""], help = 'File extension to filter by')
     args = parser.parse_args()
 
     #exit if path is not defined
@@ -15,10 +15,13 @@ def main():
         print("Enter a valid path")
         exit(1)
    
-    #create a set of files in that path
+    #create a set of files that are in the defined path
     path = args.path
     files = set()
-    files |= set(glob.glob(path + '/*' + args.extension))
+    for arg in args.extension:
+        contents = glob.glob(path + '/*' + arg)
+        contents = [content for content in contents if os.path.isfile(content)]
+        files |= set(contents)
 
     #randomly display file as virus or not
     virus = set()
@@ -33,7 +36,7 @@ def main():
     if virus:
         print("\n\033[0;34mCheck Complete - Files with virus are:")
         for file in virus:
-            print("\033[91m✘", file)
+            print("\033[91m✘", os.path.basename(file))
     else:
         print("\n\033[0;34mCheck Complete - No viruses found!!")
 
