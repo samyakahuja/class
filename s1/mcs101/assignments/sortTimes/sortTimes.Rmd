@@ -1,7 +1,6 @@
 ---
-title: "SortTimes"
+title: "Comparison Analysis for Sorting Algorithms"
 author: "Samyak Ahuja"
-date: "August 23, 2018"
 output: pdf_document
 ---
 
@@ -11,11 +10,29 @@ library(ggpmisc)
 library(reshape2)
 ```
 
-# Complexity for different Sorting Algorithms.
+# Overview
 
-## Helper Functions
+Sorting Algorithms chosen for analysis are : 
 
-### Replicator
++ [Insertion Sort](##Insertion Sort)
++ Merge Sort
++ Quick Sort
+
+
+
+# Helper Functions
+
+Helper functions are used for two purposes:
+
+|  | b | c |
+|---|---|---|
+|1  | 2  | 3  |
+
+## Data Generator and Replicator
+
+### Data Generator
+
+Objective : To  
 
 ```{r}
 
@@ -55,6 +72,8 @@ replicator <- function(func, size = 1000, sep = 20){
 
 ### Plotter
 
+plotter function creates a Comparisons vs Elements plot for each sorting algorithm separately.
+
 ```{r}
 plotter <- function(df, df_title){
   ggplot(df, aes(ele, timeElapsed, color = timeElapsed)) +
@@ -71,6 +90,9 @@ plotter <- function(df, df_title){
 ```
 
 ### Combined Plotter
+
+combined plotter function creates a combined Comparisons vs Elements plot for all the sorting algorithms.
+
 ```{r}
 comb_plotter <- function(df, df_title){
   ggplot(df, aes(ele, value, col = variable)) + 
