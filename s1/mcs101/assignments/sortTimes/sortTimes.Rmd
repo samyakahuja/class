@@ -19,32 +19,57 @@ Sorting Algorithms chosen for analysis are :
 + Quick Sort
 
 
-
 # Helper Functions
 
 Helper functions are used for two purposes:
 
-|  | b | c |
-|---|---|---|
-|1  | 2  | 3  |
+|Data Processing|Plotting|
+|---|---|
+|Data Generator|Individual Plotter|
+|Data Replicator|Combined Plotter|
 
 ## Data Generator and Replicator
 
 ### Data Generator
 
-Objective : To  
+#### About
+
+Objective : To formulate a dataset that is same for all the Sorting functions
+
+Input : 
+
++ n which is the maximum number of elements in the set
++ sep which is the separator by which the number of elements in the set are increased
+
+Output : Dataset on which Sorting is done. The format of the dataset is explained below.
+
+#### Dataset Structure
+
+Dataset is a list with the following elements by row.
+
+| 1 | 2 | ... | 10 | 
+|---|---|---|---|
+| X-1,1 | X-1,2 | ... | X-1,10 |
+| X-2,1 | X-2,2 | ... | X-2,10 |
+| ... | ... | ... | ... |
+| X-n,1 | X-n,2 | ... | X-n,10 |
+            
+X-i,j is an array with a number Xi from 0 to 100
+
+[X1, X2, ..., Xi]
+
 
 ```{r}
 
-dataSetGenerator <- function(size = 1000, sep = 20){
-    ele <- seq(from = 0, to = size, by = sep)
+dataSetGenerator <- function(n = 1000, sep = 10){
+    ele <- seq(from = 0, to = n, by = sep)
     ele <- ele[-1]
     data <- list()
-    for(n in ele){
-      iterator <- n / sep
+    for(j in ele){
+      iterator <- j / sep
       repeated <- list()
       for(i in 1:10){
-        repeated <- c(repeated, list(sample(x = 1:100, size = n, replace = TRUE)))
+        repeated <- c(repeated, list(sample(x = 1:100, size = j, replace = TRUE)))
       }
       data <- c(data, repeated)
     }
@@ -53,16 +78,40 @@ dataSetGenerator <- function(size = 1000, sep = 20){
 
 dataSet <- dataSetGenerator()
 
-replicator <- function(func, size = 1000, sep = 20){
-  ele <- seq(from = 0, to = size, by = sep)
+```
+
+
+### Data Replicator
+
+#### About
+
+Objective : To output the average number of comparisons used for each row in the dataset given the sorting algorithm
+
+Input : 
+
++ func which is the sorting function to use on the dataset
++ n which is the maximum number of elements in the set
++ sep which is the separator by which the number of elements in the set are increased
+
+Output : a Data-Frame (Matrix) that has two Columns :
+
++ ele which is the number of elements in an array given for Sorting.
++ timeElapsed which is the **average** number of comparisons used for that sorting algorithm
+
+&nbsp;
+
+```{r}
+replicator <- function(func, n = 1000, sep = 10){
+  ele <- seq(from = 0, to = n, by = sep)
   ele <- ele[-1]
   timeElapsed <- c()
-  for(n in ele){
+  for(j in ele){
     op <- 0
-    iterator <- n / sep
+    iterator <- j / sep
     for(i in 1:10){
          op = op + func(dataSet[[iterator + i]])$operations
     }
+    #taking average over 10 examples of same size
     op = op / 10
     timeElapsed <- c(timeElapsed, op)
   }
@@ -70,9 +119,15 @@ replicator <- function(func, size = 1000, sep = 20){
 }
 ```
 
-### Plotter
+## Plotting
+
+### Individual Plotter
 
 plotter function creates a Comparisons vs Elements plot for each sorting algorithm separately.
+
+The Fitting is done using a polynomial curve of degree 2.
+
+&nbsp;
 
 ```{r}
 plotter <- function(df, df_title){
@@ -91,7 +146,11 @@ plotter <- function(df, df_title){
 
 ### Combined Plotter
 
-combined plotter function creates a combined Comparisons vs Elements plot for all the sorting algorithms.
+The comb_plotter function creates a combined Comparisons vs Elements plot for all the sorting algorithms.
+
+The Fitting is done using a polynomial curve of degree 2.
+
+&nbsp;
 
 ```{r}
 comb_plotter <- function(df, df_title){
@@ -106,6 +165,9 @@ comb_plotter <- function(df, df_title){
   stat_poly_eq(parse=T, aes(label = ..eq.label..), formula=y~poly(x,2)) 
 }
 ```
+
+
+# Sorting Function - Implementation
 
 ## Insertion Sort
 
@@ -132,13 +194,6 @@ insertionSort <- function(vec){
 ### Proof of concept
 ```{r}
 insertionSort(c(12,-22,13,2,-33,2))
-```
-
-### RunTime and Plot
-```{r}
-isdf_small <- replicator(insertionSort)
-isdf_small
-plotter(isdf_small, "Insertion Sort - Small N")
 ```
 
 
@@ -193,12 +248,6 @@ mergeSort <- function(vec){
 mergeSort(c(12,-22,13,2,-33,2))
 ```
 
-### RunTime and Plot
-```{r}
-msdf_small <- replicator(mergeSort)
-msdf_small
-plotter(msdf_small, "Merge Sort - Small N")
-```
 
 ## Quick Sort
 
@@ -251,10 +300,26 @@ quickSort <- function(vec, low = 1, high = length(vec)){
 quickSort(c(12,-22,13,2,-33,2))
 ```
 
-### RunTime and Plot
+
+# Sorting Algorithms - Plots 
+
+## Individual Plots
+
+### Insertion Sort
+```{r}
+isdf_small <- replicator(insertionSort)
+plotter(isdf_small, "Insertion Sort - Small N")
+```
+
+### Merge Sort
+```{r}
+msdf_small <- replicator(mergeSort)
+plotter(msdf_small, "Merge Sort - Small N")
+```
+
+### Quick Sort
 ```{r}
 qsdf_small <- replicator(quickSort)
-qsdf_small
 plotter(qsdf_small, "Quick Sort - Small N")
 ```
 
