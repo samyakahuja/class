@@ -204,6 +204,7 @@ insertionSort(c(12,-22,13,2,-33,2))
 ```{r}
 mergeSort <- function(vec){
   
+  #merges the two sorted halves left and right to get a sorted list
   mergeTwo <- function(left,right){
     comparisons <- 1
     res <- c()
@@ -232,10 +233,12 @@ mergeSort <- function(vec){
   if(n <= 1) return (list("vec" = vec, "operations" = comparisons))
   else{
     middle <- length(vec) %/% 2 #integer division
+    
     left_list <- mergeSort(vec[1:middle])
     right_list <- mergeSort(vec[(middle + 1):n])
     left <- left_list$vec
     right <- right_list$vec
+    
     res <- mergeTwo(left,right)
     comparisons <- left_list$operations + right_list$operations + res$operations
     return (list("vec" = res$vec, "operations" = comparisons))
@@ -256,27 +259,31 @@ mergeSort(c(12,-22,13,2,-33,2))
 ```{r}
 quickSort <- function(vec, low = 1, high = length(vec)){
   
+  #partitioning vector around pivot(chosen as last element of the vector)
   partition <- function(vec, low, high){
     i = low
     comparisons <- 0
     pivot = vec[high]
+    
     for(j in low:(high - 1)){
       comparisons <- comparisons + 1 
       if(vec[j] <= pivot){
+        #swap v[i] and v[j]
         temp = vec[i]
         vec[i] = vec[j]
         vec[j] = temp
         i = i + 1
       }
     }
+    #swap pivot with v[i]
     temp = vec[i]
     vec[i] = vec[high]
     vec[high] = temp
+    
     return (list("vec" = vec, "operations" = comparisons, "pi" = i))
   }
   
   comparisons <- 0
-  
   if(low < high){
     pi_list = partition(vec, low, high)
     vec <- pi_list$vec
