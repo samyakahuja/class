@@ -14,7 +14,7 @@ library(reshape2)
 
 Sorting Algorithms chosen for analysis are : 
 
-+ [Insertion Sort](##Insertion Sort)
++ Insertion Sort
 + Merge Sort
 + Quick Sort
 
@@ -26,9 +26,9 @@ Helper functions are used for two purposes:
 |Data Processing|Plotting|
 |---|---|
 |Data Generator|Individual Plotter|
-|Data Replicator|Combined Plotter|
+|Comparison Finder|Combined Plotter|
 
-## Data Generator and Replicator
+## Data Generator and Comparison Finder
 
 ### Data Generator
 
@@ -81,7 +81,7 @@ dataSet <- dataSetGenerator()
 ```
 
 
-### Data Replicator
+### Comparison Finder
 
 #### About
 
@@ -101,7 +101,7 @@ Output : a Data-Frame (Matrix) that has two Columns :
 &nbsp;
 
 ```{r}
-replicator <- function(func, n = 1000, sep = 10){
+comp_find <- function(func, n = 1000, sep = 10){
   ele <- seq(from = 0, to = n, by = sep)
   ele <- ele[-1]
   timeElapsed <- c()
@@ -135,7 +135,7 @@ plotter <- function(df, df_title){
     geom_point(shape = 16, size = 5, show.legend = FALSE, alpha = 0.6) + 
     stat_smooth(method="lm", formula=y~poly(x,2), rm = FALSE) + 
     theme_minimal() + 
-    labs(subtitle = "Time vs Size",
+    labs(subtitle = "Comparisons vs Size",
        y = "Number of Comparisons (Averaged)",
        x = "Number of Elements",
        title = df_title) +
@@ -158,7 +158,7 @@ comb_plotter <- function(df, df_title){
   geom_point(shape = 16, size = 2, alpha = 0.6) + 
   stat_smooth(method="lm", formula=y~poly(x,2)) + 
   theme_minimal() +
-  labs(subtitle = "Time vs Size",
+  labs(subtitle = "Comparisons vs Size",
        y = "Number of Comparisons (Averaged)",
        x = "Number of Elements",
        title = df_title) +
@@ -175,19 +175,19 @@ comb_plotter <- function(df, df_title){
 ```{r}
 insertionSort <- function(vec){
   n <- length(vec)
-  op <- 0
+  comparisons <- 0
   for(i in 2:n){
     key <- vec[i]
     pos <- i - 1
     while(pos > 0 && vec[pos] > key){
       vec[pos + 1] = vec[pos]
       pos = pos - 1
-      op <- op + 1
+      comparisons <- comparisons + 1
     }
     vec[pos + 1] <- key
-    op <- op + 1
+    comparisons <- comparisons + 1
   }
-  return (list("vec" = vec, "operations" = op))
+  return (list("vec" = vec, "operations" = comparisons))
 }
 ```
 
@@ -205,10 +205,10 @@ insertionSort(c(12,-22,13,2,-33,2))
 mergeSort <- function(vec){
   
   mergeTwo <- function(left,right){
-    op <- 0
+    comparisons <- 1
     res <- c()
     while(length(left) > 0 && length(right) > 0){
-      op <- op + 1
+      comparisons <- comparisons + 1
       if(left[1] <= right[1]){
         res <- c(res,left[1])
         left <- left[-1]  
@@ -223,13 +223,13 @@ mergeSort <- function(vec){
     if(length(right) > 0){
       res <- c(res,right)
     }
-    op <- op + 1
-    return (list("vec" = res, "operations" = op))
+    return (list("vec" = res, "operations" = comparisons))
   }
   
-  op <- 0
+  comparisons <- 0
   n <- length(vec)
-  if(n <= 1) return (list("vec" = vec, "operations" = op))
+  
+  if(n <= 1) return (list("vec" = vec, "operations" = comparisons))
   else{
     middle <- length(vec) %/% 2 #integer division
     left_list <- mergeSort(vec[1:middle])
@@ -237,8 +237,8 @@ mergeSort <- function(vec){
     left <- left_list$vec
     right <- right_list$vec
     res <- mergeTwo(left,right)
-    op <- op + left_list$operations + right_list$operations + res$operations
-    return (list("vec" = res$vec, "operations" = op))
+    comparisons <- left_list$operations + right_list$operations + res$operations
+    return (list("vec" = res$vec, "operations" = comparisons))
   }
 }
 ```
@@ -258,10 +258,10 @@ quickSort <- function(vec, low = 1, high = length(vec)){
   
   partition <- function(vec, low, high){
     i = low
-    op <- 0
+    comparisons <- 0
     pivot = vec[high]
     for(j in low:(high - 1)){
-      op <- op + 1 
+      comparisons <- comparisons + 1 
       if(vec[j] <= pivot){
         temp = vec[i]
         vec[i] = vec[j]
@@ -272,10 +272,11 @@ quickSort <- function(vec, low = 1, high = length(vec)){
     temp = vec[i]
     vec[i] = vec[high]
     vec[high] = temp
-    return (list("vec" = vec, "operations" = op, "pi" = i))
+    return (list("vec" = vec, "operations" = comparisons, "pi" = i))
   }
   
-  op <- 0
+  comparisons <- 0
+  
   if(low < high){
     pi_list = partition(vec, low, high)
     vec <- pi_list$vec
@@ -287,10 +288,10 @@ quickSort <- function(vec, low = 1, high = length(vec)){
     right_list <- quickSort(vec, pi + 1, high)
     vec <- right_list$vec
     
-    op <- op + left_list$operations + right_list$operations + pi_list$operations
-    return (list("vec" = vec, "operations" = op))
+    comparisons <- left_list$operations + right_list$operations + pi_list$operations
+    return (list("vec" = vec, "operations" = comparisons))
   }else{
-    return (list("vec" = vec, "operations" = op))
+    return (list("vec" = vec, "operations" = comparisons))
   }
 }
 ```
@@ -307,20 +308,20 @@ quickSort(c(12,-22,13,2,-33,2))
 
 ### Insertion Sort
 ```{r}
-isdf_small <- replicator(insertionSort)
-plotter(isdf_small, "Insertion Sort - Small N")
+isdf_small <- comp_find(insertionSort)
+plotter(isdf_small, "Insertion Sort")
 ```
 
 ### Merge Sort
 ```{r}
-msdf_small <- replicator(mergeSort)
-plotter(msdf_small, "Merge Sort - Small N")
+msdf_small <- comp_find(mergeSort)
+plotter(msdf_small, "Merge Sort")
 ```
 
 ### Quick Sort
 ```{r}
-qsdf_small <- replicator(quickSort)
-plotter(qsdf_small, "Quick Sort - Small N")
+qsdf_small <- comp_find(quickSort)
+plotter(qsdf_small, "Quick Sort")
 ```
 
 
@@ -333,5 +334,5 @@ df_small <- data.frame(ele = msdf_small[[1]],
                  quickSort = qsdf_small[[2]])
 df_small
 df_small <- melt(df_small, id.vars = "ele")
-comb_plotter(df_small, "Combined Scatter Plot for small N")
+comb_plotter(df_small, "Combined Scatter Plot")
 ```
