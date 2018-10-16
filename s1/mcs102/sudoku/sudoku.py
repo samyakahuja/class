@@ -186,7 +186,7 @@ def main():
     for prob in problems:
         print("\n\033[0;34mProblem: \033[0m")
         display(grid_values(prob))
-        print("\033[92mSoultion:\033[0m",)
+        print("\033[92mSolution:\033[0m",)
         solved = solve(prob.strip())
         display(solved)
         print('-------------------------')
