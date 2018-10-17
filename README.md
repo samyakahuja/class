@@ -18,6 +18,7 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
     - #### [MCS102 - Artificial Intelligence][MCS102]
         + [Sudoku Solver][sudoku]
         + [Cryptarithmetic][cryptar]
+        + [TimeTable Scheduling][timetable]
     - #### [MCS103 - Information Security][MCS103]
         + [Random Bee Walker][BeeWalker]
             - [Live Github.io Page][BeeWalkerIO]
@@ -47,4 +48,5 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
 [tensor-db]: https://github.com/samyakducs/class/tree/master/s1/mcs104/tensor_polystore
 [sudoku]: https://github.com/samyakducs/class/tree/master/s1/mcs102/sudoku
 [cryptar]: https://github.com/samyakducs/class/tree/master/s1/mcs102/cryptarithmetic
+[timetable]: https://github.com/samyakducs/class/tree/master/s1/mcs102/timetable
 
