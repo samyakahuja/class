@@ -30,10 +30,10 @@ that we calculate using machine learning, specifically deep-learning.
 > Input layer will have 8 * 8 * (no_of_pieces) units
 
 This representation is called as *Bitmap Input* which represents all 64 squares
-of the board using 12(shown below) binary features plus additional.
+of the board using 12(shown below) elementary binary features plus additional.
 
 Number of pieces: 2 + 14 = 16
-bits used: lg(16) = 2
+bits used: lg(16) = 4
 
 + for-all : 1 + 1 = 2
     1. blank
@@ -48,10 +48,10 @@ bits used: lg(16) = 2
     6. king
     7. castle
 
-+ Extra info: 1 
++ Extra info: 1 column(use entire column as whose turn it is to move: easier to do)
     1. side to move
 
-> This amounts to **(8 * 8 * 4) + 1 = 257** bits in input vector
+> This amounts to **(8 * 8 * (4+1)) = 320** bits in input vector
 
 Alternative would be to use 8 * 8 * 4 = 768 units in input layer plus
 side to move and castling rights.
