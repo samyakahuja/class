@@ -20,6 +20,7 @@ class State(object):
         pass
 
     def serialize(self):
+        #257 bit representation for NN
         return self.board.shredder_fen()
 
 
