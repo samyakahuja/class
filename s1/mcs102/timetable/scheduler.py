@@ -4,7 +4,6 @@ import argparse
 import os
 import csv
 import pandas as pd
-import numpy as np
 import re
 import sys
 import warnings
@@ -12,8 +11,11 @@ import warnings
 from teacher import Teacher
 from subject import Subject
 from course import Course
+from timetable import TimeTable
+from chromosome import Chromosome
 
-def initialize():
+
+def get_data():
     parser = argparse.ArgumentParser(description = 'TimeTable Scheduler')
     parser.add_argument('path', default = "", help = 'Absolute path to the file')
     parser.add_argument('-v', '--verbose', action = 'count', help = 'increase output verbosity')
@@ -80,7 +82,27 @@ def initialize():
             print(course.id, course.name, [subject.name for subject in course.subjects])
     
 
-    ##initialize timetable
+    ##initialize timetables
+    timetables = []
+    for course in courses:
+        timetables.append(TimeTable(course))
+
+    if args.verbose:
+        print("\n\033[0;34mTimetables: \033[0m\n")
+        for timetable in timetables:
+            print(timetable.course.name, [slot.subject.name \
+                  for slot in timetable.slots if slot.subject is not None] + 
+                  [slot.subject for slot in timetable.slots if slot.subject is None])
+
+    
+    return teachers, subjects, unique_courses, courses, timetables
+
+
+
+def initialize():
+    teachers, subjects, unique_courses, courses, timetables = get_data()
+    chromosome = Chromosome(timetables)
+    
 
 if __name__ == "__main__":
     #ignore warnings : can be turned back on with python -W

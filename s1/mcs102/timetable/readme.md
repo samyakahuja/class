@@ -17,6 +17,10 @@
 DNA is how we represent all the information for a unit in the
 population. It is really a serialization(encoding) of a possible timetable.
 
+DNA is a specific timetable.
+Chromosome is a set of timetables(1 for each uniqe_course)
+
+
 ### Fitness Function
 
 Fitness fuction can be a set of constraints. Higher the number of 
@@ -32,3 +36,9 @@ Constraints :
 Optional Constraints:
 + Preferred time of class for Teacher
 + Lecture of same subject for a class should be together.
+
+### Outputs
+
+![Analysis on various problems](https://samyakducs.github.io/class/s1/mcs102/timetable/img/sc-verbose.png)
+
+

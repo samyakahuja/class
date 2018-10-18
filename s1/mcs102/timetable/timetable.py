@@ -7,7 +7,20 @@ class TimeTable:
     numSlotsPerDay = hoursPerDay // TimeSlot.duration 
     numSlotsPerWeek = numSlotsPerDay * daysPerWeek
 
-    def __init__(self, courseList= None):
+    def __init__(self, course):
+        assert course is not None
+        self.course = course
         self.slots = [TimeSlot() for _ in range(0,TimeTable.numSlotsPerWeek)]
-        #for each course in courseList assign a slot
+        
+        #for each subject assign the slots(random)
+        curSlot = 0
+        for subject in self.course.subjects:
+            slotsNeeded = int(subject.theoryHours + subject.practicalHours)
+            #TODO: Encorporate duration in slotsNeeded
+            assert slotsNeeded < len(self.slots) - curSlot
+            for i in range(slotsNeeded):
+                self.slots[curSlot + i] = TimeSlot(self.course, subject)
+            curSlot += slotsNeeded
+
+
 
