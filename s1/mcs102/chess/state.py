@@ -57,19 +57,19 @@ class State(object):
 
 
         #320 bit representation for NN from shredder_fen board
-        state = np.zeros((8,8,5), np.uint8)
+        state = np.zeros((5,8,8), np.uint8)
 
         #columns 0 to 3 to binary
-        state[:,:,0] = (bstate>>3)&1
-        state[:,:,1] = (bstate>>2)&1
-        state[:,:,2] = (bstate>>2)&1
-        state[:,:,3] = (bstate)&1
+        state[0] = (bstate>>3)&1
+        state[1] = (bstate>>2)&1
+        state[2] = (bstate>>1)&1
+        state[3] = (bstate>>0)&1
 
 
         #board.turn returns True when it is white to move
         #put last column as whose turn it is to move
         #1 for white, 0 for black
-        state[:, :, 4] = (self.board.turn * 1.0)
+        state[4] = (self.board.turn * 1.0)
 
         return state
 
