@@ -12,7 +12,7 @@ from teacher import Teacher
 from subject import Subject
 from course import Course
 from timetable import TimeTable
-from chromosome import Chromosome
+from population import Population
 
 
 def get_data():
@@ -101,7 +101,7 @@ def get_data():
 
 def initialize():
     teachers, subjects, unique_courses, courses, timetables = get_data()
-    chromosome = Chromosome(timetables)
+    tt_population = Population(100, timetables)
     
 
 if __name__ == "__main__":
