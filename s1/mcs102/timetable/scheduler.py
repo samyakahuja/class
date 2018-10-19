@@ -101,8 +101,28 @@ def get_data():
 
 def initialize():
     teachers, subjects, unique_courses, courses, timetables = get_data()
-    tt_population = Population(100, timetables)
     
+    #genetic algo parameter
+    populationSize = 100
+    generations = 1000
+    mutationRate = 1e-2
+    best_chromosome = []
+    
+    #apply genetic algorithm
+    tt_population = Population(populationSize, timetables, mutationRate)
+    for _ in range(generations):
+        tt_population.calcFitness()
+        best_chromosome.append(tt_population.getBest())
+        tt_population.generate()
+   
+    #best over all generations
+    overallBest = best_chromosome[0]
+    for ele in best_chromosome:
+        if ele.fitness > overallBest.fitness:
+            overallBest = ele
+
+    overallBest.output()
+
 
 if __name__ == "__main__":
     #ignore warnings : can be turned back on with python -W

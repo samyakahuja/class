@@ -1,4 +1,6 @@
 from timeslot import TimeSlot
+import random
+from random import shuffle
 
 class TimeTable:
 
@@ -22,5 +24,13 @@ class TimeTable:
                 self.slots[curSlot + i] = TimeSlot(self.course, subject)
             curSlot += slotsNeeded
 
+    def perm(self):
+        shuffle(self.slots)
+
+    def flip(self, i):
+        j = i
+        while j == i:
+            j = random.randint(0, len(self.slots) - 1)
+        self.slots[i], self.slots[j] = self.slots[j], self.slots[i]
 
 

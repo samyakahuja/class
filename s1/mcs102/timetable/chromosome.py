@@ -5,23 +5,25 @@ import copy
 class Chromosome:
     def __init__(self, timetables):
         self.genes = []
-        self.fitness = 0
+        self.fitness = 1
 
         for tt in timetables:
-            self.genes.append(Gene(tt))
-        #generate random permutation
-        shuffle(self.genes)
-        
+            temp_gene = Gene(tt)
+            temp_gene.perm()
+            self.genes.append(temp_gene)
 
-        self.fitness = self.getFitness()
-
-    def getFitness(self):
-        return 0
+    #TODO
+    def calcFitness(self):
+        self.fitness = 1
 
     def crossover(self):
         return copy.copy(self)
 
     def mutate(self, mutationRate):
-        for ele in genes:
+        for ele in self.genes:
             ele.mutate(mutationRate)
+  
+    #TODO
+    def output(self):
+        print('Printing Schedule')
 
