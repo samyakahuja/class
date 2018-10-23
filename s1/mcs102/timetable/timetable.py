@@ -12,8 +12,8 @@ class TimeTable:
     def __init__(self, course):
         assert course is not None
         self.course = course
-        self.slots = [TimeSlot() for _ in range(0,TimeTable.numSlotsPerWeek)]
-        
+        self.slots = [TimeSlot(self.course) for _ in range(0,TimeTable.numSlotsPerWeek)]
+
         #for each subject assign the slots(random)
         curSlot = 0
         for subject in self.course.subjects:

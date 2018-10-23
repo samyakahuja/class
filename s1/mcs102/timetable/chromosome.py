@@ -37,9 +37,40 @@ class Chromosome:
             else: nConflicts += 1
         self.fitness += nSlots - nConflicts
 
+
         #constraint - 2
         #lectures and practicals of a class on "same" day should be together
-                
+        nSlotsPerDay = self.genes[0].timetable.numSlotsPerDay
+        for gene in self.genes:
+            k = 0
+            daySlotList = [gene.timetable.slots[i:i+nSlotsPerDay] 
+                           for i in range (0,len(gene.timetable.slots),nSlotsPerDay)]
+            daySlotList = [[i for i in x if i.subject is not None] for x in daySlotList]
+            daySlotSubjectList = [[x.subject.id for x in slot] for slot in daySlotList]
+            daySlotSubjectSet = []
+            for ele in daySlotSubjectList:
+                daySlotSubjectSet.append(set(ele))
+            #compute longest running streak for each subject, add that to fitness
+            for i, dayList in enumerate(daySlotSubjectList):
+                daySet = daySlotSubjectSet[i]
+                for slot in daySet:
+                    maxAppear = [0]
+                    found = False
+                    count = 0
+                    for j in dayList:
+                        if j == slot and found:
+                            count += 1
+                        elif j == slot and not found:
+                            found = True
+                            count += 1
+                        elif j != slot and found:
+                            found = False
+                            maxAppear.append(count)
+                            count = 0
+                        if j == dayList[len(dayList) - 1] and found:
+                            maxAppear.append(count)
+                    self.fitness += max(maxAppear)
+
 
 
     def crossover(self):
@@ -49,7 +80,24 @@ class Chromosome:
         for ele in self.genes:
             ele.mutate(mutationRate)
   
-    #TODO
     def output(self):
         print('Printing Schedule')
+        print("Fitness achieved = ", self.fitness)
+        for gene in self.genes:
+            tt_slots = gene.timetable.slots
+            print("Timetable for course", tt_slots[0].course.name)
+            for i, slot in enumerate(tt_slots):
+                if i % gene.timetable.numSlotsPerDay == 0:
+                    print("\n")
+                if slot.subject is None:
+                    print('EMPTY', end = ",")
+                else:
+                    print(f'{slot.subject.name}-{slot.subject.teacher.name}', end = ",")
+            print("\n\n")
+
+
+
+
+
+        
 
