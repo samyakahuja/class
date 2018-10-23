@@ -107,9 +107,6 @@ def initialize():
     generations = 1000
     mutationRate = 1e-1
     best_chromosome = []
-    
-    print("Running Genetic Algorithm...\n")
-
 
     #apply genetic algorithm
     tt_population = Population(populationSize, timetables, mutationRate)

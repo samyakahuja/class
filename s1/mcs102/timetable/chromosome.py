@@ -81,11 +81,8 @@ class Chromosome:
             ele.mutate(mutationRate)
   
     def output(self):
-        print('Printing Schedule')
-        print("Fitness achieved = ", self.fitness)
         for gene in self.genes:
             tt_slots = gene.timetable.slots
-            print("Timetable for course", tt_slots[0].course.name)
             for i, slot in enumerate(tt_slots):
                 if i % gene.timetable.numSlotsPerDay == 0:
                     print("\n")
