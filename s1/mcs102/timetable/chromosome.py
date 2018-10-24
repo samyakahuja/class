@@ -89,7 +89,7 @@ class Chromosome:
                 if slot.subject is None:
                     print('EMPTY', end = ",")
                 else:
-                    print(f'{slot.subject.name}-{slot.subject.teacher.name}', end = ",")
+                    print(f'{slot.subject.name}({slot.subject.teacher.name})', end = ",")
             print("\n\n")
 
 
