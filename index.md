@@ -29,6 +29,8 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
     - #### [MCS105 - Computational Intelligence][MCS105]
         + Perceptron
         + Gates using Perceptron
+        + [Multiclass][multiclass]
+        + [Multilayer][multilayer]
 + ### session 2
 + ### session 3
 + ### session 4
@@ -49,3 +51,6 @@ Hi, I am Samyak Ahuja, currently completing my Masters in Computer Science from 
 [sudoku]: https://github.com/samyakducs/class/tree/master/s1/mcs102/sudoku
 [cryptar]: https://github.com/samyakducs/class/tree/master/s1/mcs102/cryptarithmetic
 [timetable]: https://github.com/samyakducs/class/tree/master/s1/mcs102/timetable
+[multiclass]: https://github.com/samyakducs/class/tree/master/s1/mcs105/multiclass_classification
+[multilayer]: https://github.com/samyakducs/class/tree/master/s1/mcs105/multilayer_nn
+
