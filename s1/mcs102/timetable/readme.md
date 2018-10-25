@@ -28,14 +28,14 @@ constraints met, higher the fitness.
 
 Constraints : 
 
-+ A Teacher takes only one class in a unit time-interval
-+ A Class has only one lecture/practical in a unit time-interval
-+ In same time-interval only 3 theory classes can be scheduled(#gareeblog)
-+ In same time-interval only 2 lab classes can be scheduled(#gareeblog)
+- A Teacher takes only one class in a unit time-interval
+- A Class has only one lecture/practical in a unit time-interval
+- In same time-interval only 3 theory classes can be scheduled(#gareeblog)
+- In same time-interval only 2 lab classes can be scheduled(#gareeblog)
 
 Optional Constraints:
-+ Preferred time of class for Teacher
-+ Lecture of same subject for a class should be together.
+- Preferred time of class for Teacher
+- Lecture of same subject for a class should be together.
 
 ### Outputs
 
