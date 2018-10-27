@@ -1,6 +1,8 @@
 from gene import Gene
 from random import shuffle
 import copy
+import csv
+import os
 
 class Chromosome:
     def __init__(self, timetables):
@@ -98,21 +100,20 @@ class Chromosome:
         for ele in self.genes:
             ele.mutate(mutationRate)
   
-    def output(self):
+    def output(self, directory):
+        dirPath = os.path.join(directory, "timetables")
+        os.makedirs(dirPath, exist_ok=True)
+        print("Writing data to separate files in",dirPath)
         for gene in self.genes:
             tt_slots = gene.timetable.slots
-            for i, slot in enumerate(tt_slots):
-                if i % gene.timetable.numSlotsPerDay == 0:
-                    print("\n")
-                if slot.subject is None:
-                    print('EMPTY', end = ",")
-                else:
-                    print(f'{slot.subject.name}({slot.subject.teacher.name})', end = ",")
-            print("\n\n")
-
-
-
-
-
-        
+            filePath = os.path.join(dirPath, tt_slots[0].course.name + ".csv")
+            dataList = [slot.subject.name+"-"+slot.subject.teacher.name 
+                    if slot.subject is not None else "Empty"
+                    for slot in tt_slots ]
+            slotsPerDay = gene.timetable.numSlotsPerDay 
+            dataListByDay = [dataList[i:i+slotsPerDay]
+                    for i in range(0, len(dataList), slotsPerDay)]
+            with open(filePath, 'w') as f:
+                writer = csv.writer(f)
+                writer.writerows(dataListByDay)
 

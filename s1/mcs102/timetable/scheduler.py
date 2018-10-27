@@ -8,6 +8,7 @@ import re
 import sys
 import warnings
 
+from config import verbose
 from teacher import Teacher
 from subject import Subject
 from course import Course
@@ -21,6 +22,7 @@ def get_data():
     parser.add_argument('-v', '--verbose', action = 'count', help = 'increase output verbosity')
     args = parser.parse_args()
 
+
     path = args.path
     if not os.path.isfile(path):
         print("Not a valid file path!")
@@ -30,8 +32,12 @@ def get_data():
         print(os.path.basename(path), "is not a csv")
         exit(1)
 
+    #set verbose to the argument form arg_parse
+    verbose = args.verbose
+    
+
     df = pd.read_csv(path)
-    if args.verbose: print("\n\033[0;34mDataframe: \033[0m\n\n",df)
+    if verbose: print("\n\033[0;34mDataframe: \033[0m\n\n",df)
 
     ##initialize teachers
 
@@ -39,7 +45,7 @@ def get_data():
     for i, teacher in enumerate(teachers):
         teachers[i] = Teacher(i, teacher)
 
-    if args.verbose:
+    if verbose:
         print("\n\033[0;34mTeachers: \033[0m\n")
         for teacher in teachers:
             print(teacher.id, teacher.name, teacher)
@@ -59,7 +65,7 @@ def get_data():
         subjects[i] = Subject(i, row[0], teacher, tHours, pHours)
         #TODO: fix warning - (enable warning at end of code)
 
-    if args.verbose:
+    if verbose:
         print("\n\033[0;34mSubjects: \033[0m\n")
         for subject in subjects:
             print(subject.id, subject.name, subject.teacher.name,
@@ -76,7 +82,7 @@ def get_data():
         temp_subs = [subject for subject in subjects if re.match(regex, subject.name)]
         courses.append(Course(i, course, temp_subs))
 
-    if args.verbose:
+    if verbose:
         print("\n\033[0;34mCourses: \033[0m\n")
         for course in courses:
             print(course.id, course.name, [subject.name for subject in course.subjects])
@@ -87,7 +93,7 @@ def get_data():
     for course in courses:
         timetables.append(TimeTable(course))
 
-    if args.verbose:
+    if verbose:
         print("\n\033[0;34mTimetables: \033[0m\n")
         for timetable in timetables:
             print(timetable.course.name, [slot.subject.name \
@@ -95,33 +101,37 @@ def get_data():
                   [slot.subject for slot in timetable.slots if slot.subject is None])
 
     
-    return teachers, subjects, unique_courses, courses, timetables
+    return teachers, subjects, unique_courses, courses, timetables, path
 
 
 
 def initialize():
-    teachers, subjects, unique_courses, courses, timetables = get_data()
+    teachers, subjects, unique_courses, courses, timetables, path = get_data()
     
     #genetic algo parameter
-    populationSize = 100
-    generations = 1000
+    populationSize = 200
+    generations = 10000
     mutationRate = 1e-1
     best_chromosome = []
 
     #apply genetic algorithm
     tt_population = Population(populationSize, timetables, mutationRate)
-    for _ in range(generations):
+    for i in range(generations):
         tt_population.calcFitness()
         best_chromosome.append(tt_population.getBest())
         tt_population.generate()
+        if i % 100 == 0:
+            print(f"\033[92m[✔]\033[0mGeneration {i} of {generations} completed") 
+    print(f"\033[92m[✔]\033[0mGeneration {generations} of {generations} completed") 
    
-    #best over all generations
+   #best over all generations
     overallBest = best_chromosome[0]
     for ele in best_chromosome:
         if ele.fitness > overallBest.fitness:
             overallBest = ele
 
-    overallBest.output()
+    print("Genetic Algorithm completed!")
+    overallBest.output(os.path.dirname(path))
 
 
 if __name__ == "__main__":
