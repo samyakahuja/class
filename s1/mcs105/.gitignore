@@ -1,2 +1,4 @@
 .ipynb_checkpoints/
 multiclass_classification/covtype.data
+multilayer_nn/covtype.data
+__pycache__
