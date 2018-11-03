@@ -5,6 +5,8 @@
 \usepackage{authblk}
 \usepackage{listings}
 \usepackage[algoruled]{algorithm2e}
+\usepackage[margin=1.2in]{geometry}
+
 
 \newtheorem{thm}{Theorem}
 \newtheorem{claim}{Claim}
@@ -81,7 +83,7 @@ There is an optimal solution with no idle time
 
 \begin{definition}[Inversion]
 We say that a schedule $A'$ has an inversion if a request $i$ with 
-deadline $d_i$ is scheduled before another job $j$ with earlier deadline
+deadline $d_i$ is scheduled before another request $j$ with earlier deadline
 $d_j < d_i$.
 \end{definition}
 
@@ -99,20 +101,63 @@ lateness
 \begin{proof}
 If two different schedules have no inversions, then they might not 
 produce exactly the same order of requests, but can only differ in the
-order of in which jobs with identical deadlines are scheduled.
+order of in which requests with identical deadlines are scheduled.
 
 Consider such a deadline $d$. In both schedules, the requests with
-deadline $d$ are scheduled consecutively. Among the jobs jobs with
+deadline $d$ are scheduled consecutively. Among the requests with
 deadline $d$, the last one has the maximum lateness, and this lateness
-doesn't depend on the order of the jobs.
+doesn't depend on the order of the requests.
 \end{proof}
 
 \begin{claim}
-There is an optimal solution with with no inversions.
+There is an optimal solution with no inversions.
 \end{claim}
 
 \begin{proof}
-% TODO
+Let $O$ be any optimal solution with no idle time. If we are able to 
+show that $O$ has no inversion then we are done. What we will do is 
+that we will take $O$ and convert it into a schedule with no inversions
+without increasing its maximum lateness. Thus the resulting solution
+will be also be optimal and without any inversions.
+
+Let us assume that $O$ has an inversion,
+removing one inversion from $O$ gives us $O_1$, which has one less 
+inversion but cost remaining the same and $O_2$ with one less inversion 
+than $O_1$ and so on leading to $O^*$ with no inversion.        
+\[ O_1 \Rightarrow O_2 \Rightarrow ... \Rightarrow O^* \]
+
+\begin{quote}
+If there is an inversion in $O$ then it is consecutive, i.e 
+if $O$ has an inversion, then there are requests $i$ and $j$ where
+$d_i > d_j$ but $i$ is scheduled \textbf{immediately} before $j$. 
+
+This is easy to show.
+If $i$ and $j$ are separated by $n$ requests in between namely 
+$r_1, r_2, r_3, ... , r_n$, where $r_1 = i$ and $r_n = j$.
+If $d_{r1} > d_{r2}$, 
+then we got a pair of consecutive intervals that are in inversion,
+and we don't need to search for consecutive inversion any further.
+Else if $d_j < d_{r1} < d_{r2}$ : repeat with ($i = r_2 , j$) 
+instead of ($r_1 , j $).
+
+if $d_{r1} < d_{r2} < d_{r3} ... < d_{rn-1}$ i.e. all intervals
+in between are not inverted, then we will reach a point where
+$d_j = d_{rn} < d_{rn-1}$, hence we get a pair of consecutive 
+intervals ($r_n-1, j$) that are inverted. 
+\end{quote}
+
+\vspace{0.1in}
+
+After swapping we have $O^*$ where $j$ is scheduled before $i$ and
+$d_j < d_i$, since $d_j < d_i$ then $T - d_j <  T - d_i$ i.e. latenenss,
+where $T$ is the time when every request is finished. We get, 
+$T - d_j <  T - d_i$ $\leq$ max lateness of schedule.
+\end{proof}
+
+\begin{proof}[Optimality of our Schedule]
+    Since there exists and optimal solution with no inversions, and
+    all schedules with no inversions have the same maximum lateness,
+    hence the solution obtained by our greedy algorithm is optimal.
 \end{proof}
 
 \end{document}
