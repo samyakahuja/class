@@ -1,11 +1,118 @@
 \documentclass{article}
 
-\author{Samyak, Sangeeta, Saurabh}
-\title{MCS-101 Scribe 30/08/18}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{authblk}
+\usepackage{listings}
+\usepackage[algoruled]{algorithm2e}
+
+\newtheorem{thm}{Theorem}
+\newtheorem{claim}{Claim}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+
+\author{Samyak}
+\author{Sangeeta}
+\author{Saurabh}
+\affil{University of Delhi}
+
+\title{Schedule to Minimize Lateness}
 \date{August 30, 2018}
+
 
 \begin{document}
     
 \maketitle
+
+\section{Problem}
+Given a single resource and a set of \textit{n} requests, 
+where each request \textit{i} has a runtime $t_i$ and deadline
+$d_i$, We want to schedule all requests and our objective is to 
+minimize the maximum lateness of that schedule.
+
+Stated more formally, we assign each request $i$ a starting time
+$s(i)$ which finishes by $f(i) = s(i) + t_i$. We say that a request
+is late if it misses its deadline $d_i$ and its lateness is defined
+by $l_i = f(i) - d_i$. Our objective is to schedule all requests, 
+using non-overlapping intervals so as to minimize the maximum lateness, 
+$L = max_i l_i$.
+
+\section{Algorithm}
+
+\subsection{Proposed Algorithm}
+We propose a greedy algorithm - which we claim always gives an optimal
+solution - which simply schedules the request with the smallest/minimum
+deadline $d_i$, that is earliest deadline first.
+
+We sort the requests in increasing order of their deadlines, that is
+\[ d_i \leq d_2 \leq ... \leq d_n \]
+and we simply sort the requests in this order. This is the algorithm
+we get.
+
+\vspace{0.2in}
+
+\begin{algorithm}[H]
+\KwIn{
+    Requests in increasing order of deadline
+    $d_1 \leq ... \leq d_i \leq ... \leq d_n$
+}
+
+Initially, $f = s$\;
+
+\Begin{
+    Assign request $i$ to the time interval from
+    $s(i) = f$ to $f(i) = f + u_i$
+
+    Let $f = f + t_i$
+}    
+
+Return the set of scheduled intervals $[s(i),f)i]$ for $i=1,...,n$
+\caption{schedule with minimum lateness}
+\end{algorithm}
+
+
+\subsection{Proving Optimality}
+
+\begin{claim}
+There is an optimal solution with no idle time
+\end{claim}
+
+\begin{definition}[Inversion]
+We say that a schedule $A'$ has an inversion if a request $i$ with 
+deadline $d_i$ is scheduled before another job $j$ with earlier deadline
+$d_j < d_i$.
+\end{definition}
+
+A thing to be noted here is that if there are requests with identical
+deadlines (which will be scheduled together by our algorithm) then
+there can be many different schedules with no inversions since the two
+intervlas with same deadline don't form an inversion and hence can be
+swapped.
+
+\begin{claim}
+All schedules with no inversions and no idle time have the same maximum
+lateness
+\end{claim}
+
+\begin{proof}
+If two different schedules have no inversions, then they might not 
+produce exactly the same order of requests, but can only differ in the
+order of in which jobs with identical deadlines are scheduled.
+
+Consider such a deadline $d$. In both schedules, the requests with
+deadline $d$ are scheduled consecutively. Among the jobs jobs with
+deadline $d$, the last one has the maximum lateness, and this lateness
+doesn't depend on the order of the jobs.
+\end{proof}
+
+\begin{claim}
+There is an optimal solution with with no inversions.
+\end{claim}
+
+\begin{proof}
+% TODO
+\end{proof}
 
 \end{document}
