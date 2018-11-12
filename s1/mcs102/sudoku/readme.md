@@ -31,7 +31,7 @@ Approach used for solving is a combined effort of constraint satisfaction
 
 ## Results
 
-![Analysis on various problems](https://samyakducs.github.io/class/s1/mcs102/sudoku/img/sc1.png)
+![Analysis on various problems](https://samyakahuja.github.io/class/s1/mcs102/sudoku/img/sc1.png)
 
 
-![Output of solved examples](https://samyakducs.github.io/class/s1/mcs102/sudoku/img/sc2.png)
+![Output of solved examples](https://samyakahuja.github.io/class/s1/mcs102/sudoku/img/sc2.png)

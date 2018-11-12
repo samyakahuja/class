@@ -65,7 +65,7 @@ The angle theta is computed by mulipying the random variable(
 added because we want to bisect the edge of the Hexagon in order
 to get to the center of the next hexagon.
 
-![Hexagon](https://samyakducs.github.io/class/s1/mcs103/assignments/random_bee_walk/hexagon.png)
+![Hexagon](https://samyakahuja.github.io/class/s1/mcs103/assignments/random_bee_walk/hexagon.png)
 
 Here the x location is changed by 2 times the radius of a hexagon
 (which is assumed to be equal to the distance between the center and
@@ -130,6 +130,6 @@ The standard deviation is too high for the solution to be called stable
 
 [comment]: # (Links to the references)
 
-[app.js]: https://samyakducs.github.io/class/s1/mcs103/assignments/random_bee_walk/app.js
-[index.html]: https://samyakducs.github.io/class/s1/mcs103/assignments/random_bee_walk/index.html
+[app.js]: https://samyakahuja.github.io/class/s1/mcs103/assignments/random_bee_walk/app.js
+[index.html]: https://samyakahuja.github.io/class/s1/mcs103/assignments/random_bee_walk/index.html
 

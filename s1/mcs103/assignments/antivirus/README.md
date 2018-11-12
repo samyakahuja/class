@@ -26,12 +26,12 @@ The Antivirus is composed of 3 Types of files :
 
 #### Command Line Interface
 
-![Format for using antivirus](https://samyakducs.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc1.png)
+![Format for using antivirus](https://samyakahuja.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc1.png)
 
 #### Examples
 
-![Format for using antivirus](https://samyakducs.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc2.png)
+![Format for using antivirus](https://samyakahuja.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc2.png)
 
-![Format for using antivirus](https://samyakducs.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc3.png)
+![Format for using antivirus](https://samyakahuja.github.io/class/s1/mcs103/assignments/antivirus/readme_files/av_sc3.png)
 
 

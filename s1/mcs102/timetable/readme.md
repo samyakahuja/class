@@ -39,6 +39,6 @@ Optional Constraints:
 
 ### Outputs
 
-![Sample Timetable](https://samyakducs.github.io/class/s1/mcs102/timetable/img/sc-timetable.png)
-![Analysis on various problems](https://samyakducs.github.io/class/s1/mcs102/timetable/img/sc-verbose.png)
+![Sample Timetable](https://samyakahuja.github.io/class/s1/mcs102/timetable/img/sc-timetable.png)
+![Analysis on various problems](https://samyakahuja.github.io/class/s1/mcs102/timetable/img/sc-verbose.png)
 
