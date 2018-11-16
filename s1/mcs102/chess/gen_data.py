@@ -14,7 +14,7 @@ def get_dataset(num_samples = None):
             if game is None:
                 break
             
-            #in pgn 1-0 is white won - map it to our value of 1 if white wins.
+            #in pgn, 1-0 is white won - map it to our value of 1 if white wins.
             res = game.headers['Result']
             if res not in values:
                 continue

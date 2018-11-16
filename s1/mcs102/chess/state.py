@@ -22,6 +22,8 @@ class State(object):
 
     def serialize(self):
 
+        assert self.board.is_valid()
+
         #board state
         bstate = np.zeros(64, np.uint8)
 
@@ -76,4 +78,4 @@ class State(object):
 
 if __name__ == "__main__":
     state = State()
-    print(state.edges())
+    #print(state.edges())
