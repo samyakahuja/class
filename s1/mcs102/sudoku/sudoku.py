@@ -88,7 +88,6 @@ def assign(values, s, d):
 ### Search
 
 def solve(grid):
-    #TODO: Implement the try catch block.
     return search(parse_grid(grid))
 
 def search(values):
@@ -156,7 +155,6 @@ def solved(values):
     Checks if values is indeed solved
     """
     def unitsolved(unit): return set(values[s] for s in unit) == set(digits)
-    #TODO: check the is.
     return values is not False and all(unitsolved(unit) for unit in unitList)
 
 
@@ -190,7 +188,10 @@ def main():
         display(grid_values(prob))
         print("\033[92mSolution:\033[0m",)
         solved = solve(prob.strip())
-        display(solved)
+        if solved:
+            display(solved)
+        else:
+            print("\033[91m✘ No solution to this problem found\033[0m")
         print('-------------------------')
 
 
