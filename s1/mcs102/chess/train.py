@@ -60,6 +60,8 @@ class Net(nn.Module):
         x = F.relu(self.d2(x))
         x = F.relu(self.d3(x))
 
+        #no_rows as defined by previous operation.
+        #no_cols = 128
         x = x.view(-1, 128)
         x = self.last(x)
 
@@ -88,6 +90,7 @@ if __name__ == '__main__':
             target = target.float()
 
             #print(data.shape, target.shape)
+            #set gradients to zero before backprop
             optimizer.zero_grad()
             output = model(data)
             #print(output.shape)
@@ -95,7 +98,8 @@ if __name__ == '__main__':
             loss = floss(output, target)
             loss.backward()
             optimizer.step()
-      
+     
+            #add loss as scalar to all_loss
             all_loss += loss.item()
             num_loss += 1
 

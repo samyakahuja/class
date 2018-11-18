@@ -50,7 +50,7 @@ class State(object):
             assert bstate[63] == 12
             bstate[63] == 15
 
-
+        #en-passant
         if self.board.ep_square is not None:
             assert bstate[self.board.ep_square] == 0
             bstate[self.board.ep_square] = 8
